@@ -7,11 +7,16 @@ app.get('/', (request, response) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('A user connected');
+  socket.emit('connect', `A new user, ${Date.now()}, has connected`);
+
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    console.log('Disconnect');
   })
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
 })
+
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
